@@ -1,5 +1,3 @@
-# Intern_Project
-
 Lithium
 Open to Intern Project Requirement
 Key points
