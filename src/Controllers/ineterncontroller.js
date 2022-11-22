@@ -1,7 +1,8 @@
 const collegemodel = require("../Models/collegemodel")
 const internmodel = require("../Models/internmodel")
+const {validName,validmobile,validemail} = require("../validations/Regex_validation")
 
-
+//----------------------------------------------Create Intern-------------------------------------------
 
 const createintern = async function(req,res){
     try {
@@ -14,26 +15,17 @@ const createintern = async function(req,res){
         if (!mobile) { return res.status(400).send({status:false,msg:"Enter a valid mobile"})}
         if (!email) { return res.status(400).send({status:false,msg:"Enter a valid email"})}
         if (!collegeName){ return res.status(400).send({status:false,msg:"Enter a collegeName"})}
-    
-        function validName(N){
-            const regex = /^[A-Z][a-z]{1,}(?: [A-Z][a-z]+){0,}$/;
-            return regex.test(N)}
-    
-        function validmobile(M){
-            const regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
-            return regex.test(M)
-        }
-    
-        function validemail(E){
-            const regex = /^[a-z0-9][a-z0-9-_\.]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/
-            return regex.test(E)
-        }
 
+
+        let Duplicate_email = await internmodel.findOne({email: email})
+        if (Duplicate_email)return res.status(400).send({status: false ,msg : "Email already exist"})
+
+        let Duplicate_mobile = await internmodel.findOne({mobile: mobile})
+        if (Duplicate_mobile)return res.status(400).send({status: false ,msg : "mobile already exist"})
 
         let checkname = validName(name)
         let checkmobile = validmobile(mobile)
-        let checkemail = validemail(email)
-        
+        let checkemail = validemail(email)  
     
         if (!checkname) return res.status(400).send({status: false ,msg : "enter valid name"})
         if (!checkmobile) return res.status(400).send({status: false ,msg : "enter valid mobile"})
@@ -42,7 +34,7 @@ const createintern = async function(req,res){
         
         let collegeid = await collegemodel.findOne({name : data.collegeName })
 
-        if (!collegeid._id){ return res.status(400).send({status:false,msg:"Enter a valid collegeid"})}
+        if (collegeid._id != data.collegeId){ return res.status(400).send({status:false,msg:"Enter a valid collegeid"})}
         
         data.collegeId = collegeid._id
 
