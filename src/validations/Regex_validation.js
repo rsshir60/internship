@@ -3,11 +3,11 @@
 //----------------------Regex-Validation-------------------------
 
 function validName(name){
-    const regex = /^[a-z0-9_-]{3,}$/;
+    const regex = /^[a-zA-Z\s]*$/g;
     return regex.test(name)}
 
 function validfullname(fullName){
-    const regex = /^[a-z][\w]+$/;
+    const regex = /^[a-zA-Z\s]*$/g;
     return regex.test(fullName)
 }
 
