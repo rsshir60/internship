@@ -16,7 +16,7 @@ try {
     if (!logoLink){ return res.status(400).send({status:false,msg:"Enter a logoLink"})}
 
     let Duplicatecollegename = await collegemodel.findOne({name: name})
-    if (Duplicatecollegename)return res.status(400).send({status: false ,msg : "name already exist"})
+    if (Duplicatecollegename)return res.status(400).send({status: false ,msg : "college already exist"})
 
     let checkname = validName(name)
     let checkfullname = validfullname(fullName)
@@ -50,7 +50,7 @@ const getcollege = async function(req,res){
 
     let interndata = await internmodel.find({collegeId: college._id}).select({name:1,email:1,mobile:1})
     if (interndata.isDeleted == true){return res.status(400).send({status: false , msg: "intern is already deleted"})}
-    if (!interndata) return res.status(400).send({status : false, msg:"no intern here"})
+    if (!interndata) return res.status(404).send({status : false, msg:"no intern here"})
 
     let Objectdata = {
         name: college.name,
