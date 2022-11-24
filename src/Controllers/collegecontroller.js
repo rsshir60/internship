@@ -10,6 +10,7 @@ try {
     
     let data = req.body
     let {name,fullName,logoLink} = data
+    if (Object.keys(req.body).length == 0){return res.status(400).send({status:false ,msg: "empty req"})}
 
     if (!name) {return res.status(400).send({status:false,msg:"Enter a name"})}
     if (!fullName) { return res.status(400).send({status:false,msg:"Enter a fullname"})}
@@ -58,7 +59,7 @@ const getcollege = async function(req,res){
         logoLink: college.logoLink,
         interns: interndata
     }
-
+    
     return res.status(200).send({status: true, data: Objectdata})
 
 } catch (error) {

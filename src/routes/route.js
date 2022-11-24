@@ -8,7 +8,7 @@ const interncontroller =require("../Controllers/ineterncontroller")
 
 router.post("/colleges",collegecontroller.createcollege)
 
-router.post("/intern",interncontroller.createintern)
+router.post("/interns",interncontroller.createintern)
 
 router.get("/collegeDetails",collegecontroller.getcollege)
 

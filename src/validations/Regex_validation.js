@@ -27,5 +27,4 @@ function validemail(Email){
 }
 
 
-
 module.exports = {validName,validfullname,validlogolink,validmobile,validemail}

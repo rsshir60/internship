@@ -2,14 +2,18 @@ const collegemodel = require("../Models/collegemodel")
 const internmodel = require("../Models/internmodel")
 const {validName,validmobile,validemail} = require("../validations/Regex_validation")
 
-//----------------------------------------------Create Intern-------------------------------------------
+//----------------------------------------------Create Intern-----------------------------------------------
 
 const createintern = async function(req,res){
+
     try {
         
         let data = req.body
     
         let {name,email,mobile,collegeName} = data
+
+        
+        if (Object.keys(req.body).length == 0){return res.status(400).send({status:false ,msg: "empty req body"})}
     
         if (!name) {return res.status(400).send({status:false,msg:"Enter a valid name"})}
         if (!mobile) { return res.status(400).send({status:false,msg:"Enter a valid mobile"})}
@@ -32,19 +36,27 @@ const createintern = async function(req,res){
         if (!checkemail) return res.status(400).send({status: false ,msg : "enter valid email"})
     
         
-        let collegeid = await collegemodel.findOne({name : data.collegeName })
+        let college = await collegemodel.findOne({name : data.collegeName })
 
-        if (collegeid._id != data.collegeId){ return res.status(400).send({status:false,msg:"Enter a valid collegeid"})}
+        if (!college){ return res.status(400).send({status:false,msg:"Enter a valid college"})}
         
-        data.collegeId = collegeid._id
+        data.collegeId = college._id
 
         let interndata  = await internmodel.create(data)
 
-        return res.status(201).send({status:true, data:interndata})
+        const Data = {
+
+                name: interndata.name,
+                email: interndata.email,
+                mobile: interndata.mobile,
+                collegeId:interndata.collegeId  
+            }
+
+        return res.status(201).send({status:true, data:Data})
 
     
     } catch (error) {
-        return res.status(500).send({status: false , msg : error.message})  
+        return res.status(500).send({status:false , msg : error.message})  
     }}
 
 
